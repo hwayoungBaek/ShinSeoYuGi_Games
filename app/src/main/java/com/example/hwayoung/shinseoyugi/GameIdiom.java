@@ -20,10 +20,12 @@ import java.util.Random;
 public class GameIdiom extends Activity {
 
     ConstraintLayout layout_game_start;
+    ConstraintLayout layout_game;
     TextView tv_randomIdiom;
 
     String data[] = new String[20]; // 사자성어 데이터
     int visited[] = new int[20];
+    int random_num;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,6 +33,7 @@ public class GameIdiom extends Activity {
         setContentView(R.layout.game_idiom);
 
         layout_game_start = (ConstraintLayout)findViewById(R.id.layout_game_start);
+        layout_game = (ConstraintLayout)findViewById(R.id.layout_game);
         tv_randomIdiom = (TextView)findViewById(R.id.tv_randomIdiom);
 
         // 초기화 - 사자성어 text file 읽어놓기
@@ -40,17 +43,23 @@ public class GameIdiom extends Activity {
     public void onBtnGameIdiomStartClicked(View v){
 
         layout_game_start.setVisibility(View.INVISIBLE); // 게임 스타트 화면 사라지도록
+        layout_game.setVisibility(View.VISIBLE);
         startGame();
     }
 
+    public void onBtnCheckAnswerClicked(View v){
+        tv_randomIdiom.setText(data[random_num]);
+    }
+
     public void startGame(){
-        int random_num =new Random().nextInt(18); // 0~18 +1 -> 1~19
+        random_num =new Random().nextInt(18) +1; // 0~18 +1 -> 1~19
         while(visited[random_num]!=0){
             // 이미 뽑혔던 숫자라면 다시뽑기
-            random_num =new Random().nextInt(18);
+            random_num =new Random().nextInt(18)+1;
         }
         visited[random_num]=1; // 방문표시
-        tv_randomIdiom.setText(data[random_num]);
+        Log.e("string random_num :",random_num+"");
+        tv_randomIdiom.setText(data[random_num].substring(0,2)); // 0<= 인덱스 <2 -> 0, 1
     }
 
     public void readText(){
