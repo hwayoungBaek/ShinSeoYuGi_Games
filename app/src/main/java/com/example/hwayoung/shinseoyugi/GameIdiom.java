@@ -15,6 +15,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Random;
 
 public class GameIdiom extends Activity {
 
@@ -22,6 +23,7 @@ public class GameIdiom extends Activity {
     TextView tv_randomIdiom;
 
     String data[] = new String[20]; // 사자성어 데이터
+    int visited[] = new int[20];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -42,7 +44,13 @@ public class GameIdiom extends Activity {
     }
 
     public void startGame(){
-      // tv_randomIdiom.setText();
+        int random_num =new Random().nextInt(18); // 0~18 +1 -> 1~19
+        while(visited[random_num]!=0){
+            // 이미 뽑혔던 숫자라면 다시뽑기
+            random_num =new Random().nextInt(18);
+        }
+        visited[random_num]=1; // 방문표시
+        tv_randomIdiom.setText(data[random_num]);
     }
 
     public void readText(){
